@@ -1,6 +1,5 @@
 import torch
 import json
-
 from pydantic import BaseModel, Field
 from typing import List, Literal, Optional
 import outlines
@@ -166,37 +165,6 @@ def build_candidates_with_qwen(state: dict) -> dict:
     state["candidates"] = candidates
     return state
 
-# def final_formatter(model, tokenizer, state: dict) -> dict:
-#     print("\n I am in the Final Formatter node\n")
-#     print(f"\n\n STATE IS {state}\n\n")
-#     user_query = state["input"]
-#     items_str = state["knowledge"]
-#     prompt = JUDGE_PROMPT.format(query=user_query, items=items_str)
-#     print("Thinking...\n")
-#     print(f"The device is {model.device}")
-#     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
-#     print("Generating....\n")
-#     generated_ids = model.generate(**inputs, temperature=0.8, max_new_tokens=400)
-#     print("Decoding...\n")
-#     new_ids = generated_ids[0][inputs["input_ids"].shape[1]:]
-#     print(f"New IDS are {new_ids}\n")
-#     json_text = tokenizer.decode(new_ids, skip_special_tokens=True).strip()
-#     print(f"json_text is {json_text}\n")
-
-#     final_output = FinalStoryboard.model_validate_json(json_text)
-#     print("----------------END OF RESPONSE------------------\n")
-#     print(f"In the final formatter, the llm responded to {prompt} \n and said this : {final_output}")
-    
-#     try:
-#         storyboard = json.loads(final_output)
-#     except json.JSONDecodeError:
-#         storyboard = []
-#     return {
-#         **state,
-#         "final_output": storyboard,
-#         "status": "complete"
-#     }
-
 def final_formatter(model, tokenizer, state: dict) -> dict:
     """
     Generates a structured storyboard using 'outlines' to guarantee valid output.
@@ -204,7 +172,7 @@ def final_formatter(model, tokenizer, state: dict) -> dict:
     print("\n✅ Entering Final Formatter node with `outlines`......")
 
     try:
-        # 1. Create the structured generation model from your base model
+        # 1. Create the structured generation model from base model
         outlines_model = outlines.from_transformers(model, tokenizer)
         user_query = state["input"]
         items_str = json.dumps(state["knowledge"], indent=2)
@@ -212,7 +180,7 @@ def final_formatter(model, tokenizer, state: dict) -> dict:
 
         print("🧠 Generating structured response from language model...")
 
-        # 2. Call the outlines generator with your Pydantic schema
+        # 2. Call the outlines generator with Pydantic schema
         # This directly returns a validated Pydantic object, not a string!
         json_text = outlines_model(prompt, output_type=FinalStoryboard, temperature=0.7, max_new_tokens=1024)
 
