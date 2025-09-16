@@ -1,10 +1,9 @@
-🎬 Agentic Storyboarding with LLMs
+# 🎬 Agentic Storyboarding with LLMs
 
 An AI workflow that automatically generates scene-by-scene storyboards from raw video or textual prompts. Built with LangGraph, this project demonstrates how agentic architectures can combine reasoning, multimodal analysis, and reflection-inspired prompting to produce coherent narrative outputs.
 
-⸻
 
-✨ Overview
+## ✨ Overview
 
 Storyboarding is central to video production, but it’s often time-consuming and manual. This project explores how multi-agent workflows powered by large language and vision models can:
 	•	📸 Extract key frames and information from raw video
@@ -14,9 +13,8 @@ Storyboarding is central to video production, but it’s often time-consuming an
 
 This system showcases how agentic frameworks can orchestrate specialized models to perform complex, multi-step creative tasks.
 
-⸻
 
-⚙️ Architecture
+## ⚙️ Architecture
 
 <img width="453" height="416" alt="Pipeline Diagram" src="https://github.com/user-attachments/assets/7ffb405c-da1b-48a6-b0c7-e5b2935c8b40" />  
 
@@ -31,15 +29,12 @@ Models used:
 	•	Mistral → Orchestration & drafting.\
 	•	Llama-3.1 → Reasoning & reflection within prompts.
 
-⸻
-
 📊 Key Features\
 	•	🧩 Agentic workflow orchestration with LangGraph\
 	•	🌐 Tool-equipped agents (web search + YouTube extraction)\
 	•	🎥 Multimodal support: text + video frames\
 	•	🔄 Reflection-inspired prompting to improve coherence
 
-⸻
 
 ## 🛠️ Sample Workflow  
 
@@ -77,15 +72,6 @@ The agent double-checks timestamps and scene content to ensure relevant frames a
 Once enough context is gathered, the orchestrator switches to `ready_to_design`, handing off to the Final Formatter, which creates narrative scene descriptions and produces the polished storyboard output.  oduces the polished storyboard output.
 
 
-
-
-
-
-⸻
-
-📑 Sample Output
-
-✨ Successfully created and validated storyboard object!
 
 ## 📑 Sample Output  
 
@@ -134,9 +120,8 @@ Once enough context is gathered, the orchestrator switches to `ready_to_design`,
 }
 
 
-⸻
 
-🎨 Sample Storyboard Images
+## 🎨 Sample Storyboard Images
 
 <img width="379" height="364" alt="storyboard_1" src="https://github.com/user-attachments/assets/e594dd4e-7739-4e3f-8593-9da45cb349c5" />  
 <img width="311" height="366" alt="storyboard_2" src="https://github.com/user-attachments/assets/428626d8-3705-4a71-9026-902704247a7f" />  
@@ -144,4 +129,3 @@ Once enough context is gathered, the orchestrator switches to `ready_to_design`,
 
 
 
-⸻
