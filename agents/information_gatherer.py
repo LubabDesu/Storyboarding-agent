@@ -1,12 +1,8 @@
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.messages import HumanMessage
-
-
 from langchain import hub
 from langchain_core.runnables import Runnable
 from typing import Dict
-
-# Assuming this comes from your earlier setup
 from langchain_community.utilities import GoogleSerperAPIWrapper
 from langchain_mistralai import ChatMistralAI
 from langchain.callbacks import StreamingStdOutCallbackHandler
@@ -14,6 +10,7 @@ from langchain.callbacks.manager import CallbackManager
 import os, httpx
 from dotenv import load_dotenv
 import cv2
+import json
 load_dotenv()
 import math
 import hashlib
@@ -369,8 +366,6 @@ def analyze_and_extract(video_path: str) -> str:
     return {"items": items}
 
 
-
-
 # === Setup Model ===
 custom_httpx_client = httpx.Client(
     verify=False,
@@ -481,8 +476,7 @@ agent = create_tool_calling_agent(agent_with_tools, tools, prompt)
 executor = AgentExecutor(agent=agent, tools=tools, verbose=True, output_key="output" )
 
 
-# === Helper Function === 
-import json
+# === Helper Function for information_gatherer node === 
 
 def parse_knowledge(output) -> list:
     """
@@ -521,7 +515,6 @@ def information_gatherer(state: dict) -> dict:
     """
     Gathers information using the web_search agent and returns the findings.
     """
-    print("im currently in the info gatherer node\n")
     print(f"📥 [information_gatherer] received state: {state}")
 
 
@@ -534,7 +527,6 @@ def information_gatherer(state: dict) -> dict:
     reason_for_retry = state.get("reason_for_retry", "")
     attempt = state.get("attempt", 0)
     search_history = state.get("search_history", [])
-    print(f"Needs Currenlty is {needs}")
 
     # Now, pass the dynamic values into the executor
     result = executor.invoke({
@@ -546,15 +538,11 @@ def information_gatherer(state: dict) -> dict:
         "reason_for_retry": reason_for_retry # <-- Pass the reason
     })
     
-    print(f"Fresh information !!!! : {result}")
     items = parse_knowledge(result['output'])
-    # print(f"items is {items}\n")
     combined = prev_know + items
     state["knowledge"] = combined
 
-    # <–– print to stdout every time this node runs
     print("🧠 [info_gatherer] accumulated knowledge:\n", combined)
-    # print("\nHence I have the updated state : \n")
-    # print(state)
+
 
     return state
